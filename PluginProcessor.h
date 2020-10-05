@@ -60,10 +60,11 @@ private:
     
     float mDelayTimeInSamples;
     float mDelayReadHead;
-    //float dryGain;
-    //float delayLevel;
-    //float feedback;
+    float dryGain;
+    float delayLevel;
+    float feedback;
     float delayTime;
+    juce::AudioParameterFloat* mDelayTimeParameter;
     float mLastInputGain  = 0.0f;
     
     float* mCircularBufferRight;

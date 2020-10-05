@@ -1,10 +1,10 @@
 /*
-  ==============================================================================
-
-    This file contains the basic framework code for a JUCE plugin processor.
-
-  ==============================================================================
-*/
+ ==============================================================================
+ 
+ This file contains the basic framework code for a JUCE plugin processor.
+ 
+ ==============================================================================
+ */
 
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
@@ -12,16 +12,17 @@
 //==============================================================================
 Waylomod2020AudioProcessor::Waylomod2020AudioProcessor()
 #ifndef JucePlugin_PreferredChannelConfigurations
-     : AudioProcessor (BusesProperties()
-                     #if ! JucePlugin_IsMidiEffect
-                      #if ! JucePlugin_IsSynth
-                       .withInput  ("Input",  juce::AudioChannelSet::stereo(), true)
-                      #endif
-                       .withOutput ("Output", juce::AudioChannelSet::stereo(), true)
-                     #endif
-                       )
+: AudioProcessor (BusesProperties()
+#if ! JucePlugin_IsMidiEffect
+#if ! JucePlugin_IsSynth
+                  .withInput  ("Input",  juce::AudioChannelSet::stereo(), true)
+#endif
+                  .withOutput ("Output", juce::AudioChannelSet::stereo(), true)
+#endif
+                  )
 #endif
 {
+    addParameter(mDelayTimeParameter = new juce::AudioParameterFloat("delaytime", "Delay Time", 0.01, MAX_DELAY_TIME, 0.5));
     mCircularBufferLeft = nullptr;
     mCircularBufferRight = nullptr;
     mCircularBufferWriteHead = 0;
@@ -29,7 +30,7 @@ Waylomod2020AudioProcessor::Waylomod2020AudioProcessor()
     mDelayTimeInSamples = 0.0;
     mDelayReadHead = 0.0;
     dryGain = 0.5;
-    delayLevel = 2;
+    delayLevel = 0.4;
     feedback = 0.5;
     delayTime = 0.5;
     mfeedbackLeft = 0.0;
@@ -61,29 +62,29 @@ const juce::String Waylomod2020AudioProcessor::getName() const
 
 bool Waylomod2020AudioProcessor::acceptsMidi() const
 {
-   #if JucePlugin_WantsMidiInput
+#if JucePlugin_WantsMidiInput
     return true;
-   #else
+#else
     return false;
-   #endif
+#endif
 }
 
 bool Waylomod2020AudioProcessor::producesMidi() const
 {
-   #if JucePlugin_ProducesMidiOutput
+#if JucePlugin_ProducesMidiOutput
     return true;
-   #else
+#else
     return false;
-   #endif
+#endif
 }
 
 bool Waylomod2020AudioProcessor::isMidiEffect() const
 {
-   #if JucePlugin_IsMidiEffect
+#if JucePlugin_IsMidiEffect
     return true;
-   #else
+#else
     return false;
-   #endif
+#endif
 }
 
 double Waylomod2020AudioProcessor::getTailLengthSeconds() const
@@ -94,7 +95,7 @@ double Waylomod2020AudioProcessor::getTailLengthSeconds() const
 int Waylomod2020AudioProcessor::getNumPrograms()
 {
     return 1;   // NB: some hosts don't cope very well if you tell them there are 0 programs,
-                // so this should be at least 1, even if you're not really implementing programs.
+    // so this should be at least 1, even if you're not really implementing programs.
 }
 
 int Waylomod2020AudioProcessor::getCurrentProgram()
@@ -119,11 +120,11 @@ void Waylomod2020AudioProcessor::changeProgramName (int index, const juce::Strin
 void Waylomod2020AudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
     
-
+    
     // Use this method as the place to do any pre-playback
     // initialisation that you need..
     mCircularBufferLength = sampleRate*MAX_DELAY_TIME;
-    mDelayTimeInSamples = sampleRate*delayTime;
+    mDelayTimeInSamples = sampleRate* *mDelayTimeParameter;
     // Use this method as the place to do any pre-playback
     // initialisation that you need..
     if (mCircularBufferLeft != nullptr ) {
@@ -157,24 +158,24 @@ void Waylomod2020AudioProcessor::releaseResources()
 #ifndef JucePlugin_PreferredChannelConfigurations
 bool Waylomod2020AudioProcessor::isBusesLayoutSupported (const BusesLayout& layouts) const
 {
-  #if JucePlugin_IsMidiEffect
+#if JucePlugin_IsMidiEffect
     juce::ignoreUnused (layouts);
     return true;
-  #else
+#else
     // This is the place where you check if the layout is supported.
     // In this template code we only support mono or stereo.
     if (layouts.getMainOutputChannelSet() != juce::AudioChannelSet::mono()
-     && layouts.getMainOutputChannelSet() != juce::AudioChannelSet::stereo())
+        && layouts.getMainOutputChannelSet() != juce::AudioChannelSet::stereo())
         return false;
-
+    
     // This checks if the input layout matches the output layout
-   #if ! JucePlugin_IsSynth
+#if ! JucePlugin_IsSynth
     if (layouts.getMainOutputChannelSet() != layouts.getMainInputChannelSet())
         return false;
-   #endif
-
+#endif
+    
     return true;
-  #endif
+#endif
 }
 #endif
 
@@ -183,7 +184,7 @@ void Waylomod2020AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
     juce::ScopedNoDenormals noDenormals;
     auto totalNumInputChannels  = getTotalNumInputChannels();
     auto totalNumOutputChannels = getTotalNumOutputChannels();
-
+    
     // In case we have more outputs than inputs, this code clears any output
     // channels that didn't contain input data, (because these aren't
     // guaranteed to be empty - they may contain garbage).
@@ -192,7 +193,9 @@ void Waylomod2020AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
     // this code if your algorithm always overwrites all the output channels.
     for (int i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
-
+    
+    mDelayTimeInSamples = getSampleRate() * *mDelayTimeParameter;
+    
     // This is the place where you'd normally do the guts of your plugin's
     // audio processing...
     // Make sure to reset the state if your inner loop is processing
@@ -203,17 +206,17 @@ void Waylomod2020AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
     float* LeftChannel = buffer.getWritePointer(0);
     float* RightChannel = buffer.getWritePointer(1);
     
-
+    
     
     for (int i = 0; i < buffer.getNumSamples(); ++i)
     {
-
         
-        mCircularBufferLeft[mCircularBufferWriteHead] = LeftChannel[i] + mfeedbackLeft;
+        
+        //mCircularBufferLeft[mCircularBufferWriteHead] = LeftChannel[i] + mfeedbackLeft;
         mCircularBufferRight[mCircularBufferWriteHead] = RightChannel[i] + mfeedbackRight;
         
-        //mCircularBufferLeft[mCircularBufferWriteHead] = LeftChannel[i];
-        //mCircularBufferRight[mCircularBufferWriteHead] = RightChannel[i];
+       mCircularBufferLeft[mCircularBufferWriteHead] = LeftChannel[i];
+       // mCircularBufferRight[mCircularBufferWriteHead] = RightChannel[i];
         
         mDelayReadHead = mCircularBufferWriteHead - mDelayTimeInSamples;
         
@@ -221,23 +224,23 @@ void Waylomod2020AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
             mDelayReadHead += mCircularBufferLength;
         }
         
-
+        
         float delay_sample_Left = mCircularBufferLeft[int(mDelayReadHead)];
         float delay_sample_Right = mCircularBufferRight[int(mDelayReadHead)];
         
-        mfeedbackLeft = delay_sample_Left*0.8;
-        mfeedbackRight = delay_sample_Right*0.8;
+        //mfeedbackLeft = delay_sample_Left*0.5;
+        mfeedbackRight = delay_sample_Right*feedback;
         
-
-        buffer.setSample(0, i, 0.3*buffer.getSample(0, i));
-        buffer.setSample(1, i, 0.3*buffer.getSample(1,i) + delay_sample_Right*0.6);
+        
+        buffer.setSample(0, i, dryGain*buffer.getSample(0, i) );
+        buffer.setSample(1, i, dryGain*buffer.getSample(1 ,i) + delayLevel*delay_sample_Right);
         //buffer.setSample(0, i, delay_sample_Left);
         //buffer.setSample(1, i, delay_sample_Right);
-       // buffer.setSample(0, i, delayLevel*mCircularBufferLeft[int(mDelayReadHead)]);
-       // buffer.setSample(1, i, delayLevel*mCircularBufferRight[int(mDelayReadHead)]);
+        // buffer.setSample(0, i, delayLevel*mCircularBufferLeft[int(mDelayReadHead)]);
+        // buffer.setSample(1, i, delayLevel*mCircularBufferRight[int(mDelayReadHead)]);
         //buffer.setSample(1, i, mCircularBufferRight[int(mDelayReadHead)]);
         //buffer.setSample(1, i, dryGain*RightChannel[i]);
-     
+        
         mCircularBufferWriteHead ++;
         
         if (mCircularBufferWriteHead == mCircularBufferLength){
@@ -245,6 +248,8 @@ void Waylomod2020AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
         }
     }
 }
+
+
 
 //==============================================================================
 bool Waylomod2020AudioProcessor::hasEditor() const

@@ -67,6 +67,7 @@ private:
     float delayTime;
     juce::AudioParameterFloat* mDelayTimeParameter;
     float mLastInputGain  = 0.0f;
+    float mDelayTimeSmoothed; 
     
     float* mCircularBufferRight;
     float* mCircularBufferLeft;

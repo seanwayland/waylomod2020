@@ -35,6 +35,7 @@ Waylomod2020AudioProcessor::Waylomod2020AudioProcessor()
     delayTime = 0.5;
     mfeedbackLeft = 0.0;
     mfeedbackRight = 0.0;
+    mDelayTimeSmoothed = 0;
     
 }
 
@@ -152,6 +153,7 @@ void Waylomod2020AudioProcessor::prepareToPlay (double sampleRate, int samplesPe
     }
     
     mCircularBufferWriteHead = 0;
+    mDelayTimeSmoothed = *mDelayTimeParameter;
     
 }
 
@@ -200,7 +202,7 @@ void Waylomod2020AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
     for (int i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
     
-    mDelayTimeInSamples = getSampleRate() * *mDelayTimeParameter;
+    
     
     // This is the place where you'd normally do the guts of your plugin's
     // audio processing...
@@ -216,7 +218,8 @@ void Waylomod2020AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
     
     for (int i = 0; i < buffer.getNumSamples(); ++i)
     {
-        
+        mDelayTimeSmoothed = mDelayTimeSmoothed - 0.001*(mDelayTimeSmoothed - *mDelayTimeParameter);
+        mDelayTimeInSamples = getSampleRate() * mDelayTimeSmoothed ;
         
         //mCircularBufferLeft[mCircularBufferWriteHead] = LeftChannel[i] + mfeedbackLeft;
         mCircularBufferRight[mCircularBufferWriteHead] = RightChannel[i] + mfeedbackRight;

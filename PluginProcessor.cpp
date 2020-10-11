@@ -116,6 +116,12 @@ void Waylomod2020AudioProcessor::changeProgramName (int index, const juce::Strin
 {
 }
 
+float Waylomod2020AudioProcessor::linInterp(float sample_x, float sample_x1, float inPhase)
+{
+    return (1 - inPhase) * sample_x + inPhase * sample_x1;
+    
+}
+
 //==============================================================================
 void Waylomod2020AudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
@@ -224,9 +230,19 @@ void Waylomod2020AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
             mDelayReadHead += mCircularBufferLength;
         }
         
+        int readHeadX = (int)mDelayReadHead;
+        float readHeadFloat = mDelayReadHead - readHeadX;
+        int readHeadX1 = readHeadX + 1;
         
-        float delay_sample_Left = mCircularBufferLeft[int(mDelayReadHead)];
-        float delay_sample_Right = mCircularBufferRight[int(mDelayReadHead)];
+        if ( readHeadX1 >= mCircularBufferLength){
+            readHeadX1 -= mCircularBufferLength;
+        }
+        
+        
+        //float delay_sample_Left = mCircularBufferLeft[int(mDelayReadHead)];
+        //float delay_sample_Right = mCircularBufferRight[int(mDelayReadHead)];
+        float delay_sample_Left = Waylomod2020AudioProcessor::linInterp(mCircularBufferLeft[readHeadX], mCircularBufferLeft[readHeadX1], readHeadFloat);
+        float delay_sample_Right = Waylomod2020AudioProcessor::linInterp(mCircularBufferRight[readHeadX], mCircularBufferRight[readHeadX1], readHeadFloat);
         
         //mfeedbackLeft = delay_sample_Left*0.5;
         mfeedbackRight = delay_sample_Right*feedback;

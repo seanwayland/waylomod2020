@@ -31,6 +31,7 @@ private:
     juce::Slider mDelayTimeSlider;
     juce::Slider mDryGainSlider;
     juce::Slider mDelayOneGainSlider;
+    juce::Slider mDelayOneModDepthSlider;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Waylomod2020AudioProcessorEditor)
 };

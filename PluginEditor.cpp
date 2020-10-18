@@ -15,7 +15,7 @@ Waylomod2020AudioProcessorEditor::Waylomod2020AudioProcessorEditor (Waylomod2020
 {
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
-    setSize (600,600);
+    setSize (800,800);
     auto& params = processor.getParameters();
     
     
@@ -51,6 +51,17 @@ Waylomod2020AudioProcessorEditor::Waylomod2020AudioProcessorEditor (Waylomod2020
     mDelayOneGainSlider.onValueChange = [this, delayOneGainParameter] { *delayOneGainParameter = mDelayOneGainSlider.getValue(); };
     mDelayOneGainSlider.onDragStart = [delayOneGainParameter] {delayOneGainParameter->beginChangeGesture(); };
     mDelayOneGainSlider.onDragEnd = [delayOneGainParameter] {delayOneGainParameter->endChangeGesture(); };
+    
+    juce::AudioParameterFloat* delayOneModDpethParameter = (juce::AudioParameterFloat*)params.getUnchecked(3);
+    mDelayOneModDepthSlider.setBounds(100, 600 , 200, 200);
+    mDelayOneModDepthSlider.setSliderStyle(juce::Slider::SliderStyle::RotaryVerticalDrag);
+    mDelayOneModDepthSlider.setTextBoxStyle(juce::Slider::TextBoxLeft, false, 100, 50);
+    mDelayOneGainSlider.setRange(delayOneModDpethParameter->range.start, delayOneModDpethParameter->range.end);
+    mDelayOneModDepthSlider.setValue(*delayOneGainParameter);
+    addAndMakeVisible(mDelayOneModDepthSlider);
+    mDelayOneModDepthSlider.onValueChange = [this, delayOneModDpethParameter] { *delayOneModDpethParameter = mDelayOneModDepthSlider.getValue(); };
+    mDelayOneModDepthSlider.onDragStart = [delayOneModDpethParameter] {delayOneModDpethParameter->beginChangeGesture(); };
+    mDelayOneModDepthSlider.onDragEnd = [delayOneModDpethParameter] {delayOneModDpethParameter->endChangeGesture(); };
     
     
 }

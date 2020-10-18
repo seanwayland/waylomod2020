@@ -71,8 +71,7 @@ private:
    juce::AudioParameterFloat* mDelayTimeParameter;
    juce::AudioParameterFloat* mDryGainParameter;
    juce::AudioParameterFloat* mDelayOneGainParameter;
-   
-    //juce::AudioParameterFloat* mModDepthParameter;
+   juce::AudioParameterFloat* mDelayOneModDepthParameter;
    // juce::AudioParameterFloat* mModRateParameter;
     
     float mLastInputGain  = 0.0f;

@@ -22,7 +22,10 @@ Waylomod2020AudioProcessor::Waylomod2020AudioProcessor()
                   )
 #endif
 {
-    addParameter(mDelayTimeParameter = new juce::AudioParameterFloat("delaytime", "Delay Time", 0.01, MAX_DELAY_TIME, 0.5));
+    //addParameter(mDelayTimeParameter = new juce::AudioParameterFloat("delaytime", "Delay Time", 0.01, MAX_DELAY_TIME, 0.5));
+    //addParameter(mModDepthParameter = new juce::AudioParameterFloat("modDepth", "Mod Depth", 0, 1, 0.5));
+    //addParameter(mModRateParameter = new juce::AudioParameterFloat("delaytime", "Delay Time", 0.1f, 20.f, 10.f));
+
     mCircularBufferLeft = nullptr;
     mCircularBufferRight = nullptr;
     mCircularBufferWriteHead = 0;
@@ -35,7 +38,10 @@ Waylomod2020AudioProcessor::Waylomod2020AudioProcessor()
     delayTime = 0.5;
     mfeedbackLeft = 0.0;
     mfeedbackRight = 0.0;
-    mDelayTimeSmoothed = 0;
+    mDelayTimeSmoothed = 1;
+    mLFOphase = 0;
+    mLFOrate = 0.3f;
+    mLFOdepth = 0.5f;
     
 }
 
@@ -126,12 +132,15 @@ float Waylomod2020AudioProcessor::linInterp(float sample_x, float sample_x1, flo
 //==============================================================================
 void Waylomod2020AudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
+    mLFOphase = 0;
+    mLFOrate = 0.3f;
+    mLFOdepth = 0.5f;
     
     
     // Use this method as the place to do any pre-playback
     // initialisation that you need..
     mCircularBufferLength = sampleRate*MAX_DELAY_TIME;
-    mDelayTimeInSamples = sampleRate* *mDelayTimeParameter;
+    //mDelayTimeInSamples = sampleRate* *mDelayTimeParameter;
     // Use this method as the place to do any pre-playback
     // initialisation that you need..
     if (mCircularBufferLeft != nullptr ) {
@@ -153,7 +162,7 @@ void Waylomod2020AudioProcessor::prepareToPlay (double sampleRate, int samplesPe
     }
     
     mCircularBufferWriteHead = 0;
-    mDelayTimeSmoothed = *mDelayTimeParameter;
+   // mDelayTimeSmoothed = *mDelayTimeParameter;
     
 }
 
@@ -218,7 +227,24 @@ void Waylomod2020AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
     
     for (int i = 0; i < buffer.getNumSamples(); ++i)
     {
-        mDelayTimeSmoothed = mDelayTimeSmoothed - 0.001*(mDelayTimeSmoothed - *mDelayTimeParameter);
+        
+        
+        float lfoOut = sin(2*M_PI * mLFOphase);
+        
+        
+       // mLFOphase += *mModRateParameter * getSampleRate();
+        mLFOphase += mLFOrate / getSampleRate();
+        
+        
+        if ( mLFOphase > 1){
+            mLFOphase -= 1;
+        }
+        
+        lfoOut *= mLFOdepth;
+        
+        float lfoOutMapped = juce::jmap(lfoOut,-1.f,1.f,0.005f, 0.03f);
+        
+        mDelayTimeSmoothed = mDelayTimeSmoothed - 0.001*(mDelayTimeSmoothed - lfoOutMapped);
         mDelayTimeInSamples = getSampleRate() * mDelayTimeSmoothed ;
         
         //mCircularBufferLeft[mCircularBufferWriteHead] = LeftChannel[i] + mfeedbackLeft;

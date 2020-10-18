@@ -18,6 +18,7 @@ Waylomod2020AudioProcessorEditor::Waylomod2020AudioProcessorEditor (Waylomod2020
     setSize (400, 300);
     auto& params = processor.getParameters();
     
+    /**
     juce::AudioParameterFloat* delayTimeParameter = (juce::AudioParameterFloat*)params.getUnchecked(0);
     mDelayTimeSlider.setBounds(100, 0 , 200, 200);
     mDelayTimeSlider.setSliderStyle(juce::Slider::SliderStyle::RotaryVerticalDrag);
@@ -28,7 +29,7 @@ Waylomod2020AudioProcessorEditor::Waylomod2020AudioProcessorEditor (Waylomod2020
     mDelayTimeSlider.onValueChange = [this, delayTimeParameter] { *delayTimeParameter = mDelayTimeSlider.getValue(); };
     mDelayTimeSlider.onDragStart = [delayTimeParameter] {delayTimeParameter->beginChangeGesture(); };
     mDelayTimeSlider.onDragEnd = [delayTimeParameter] {delayTimeParameter->endChangeGesture(); };
-    
+    **/
     
 }
 

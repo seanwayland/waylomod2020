@@ -22,10 +22,11 @@ Waylomod2020AudioProcessor::Waylomod2020AudioProcessor()
                   )
 #endif
 {
-    addParameter(mDelayTimeParameter = new juce::AudioParameterFloat("delaytime", "Delay Time", 0.01, MAX_DELAY_TIME, 0.5));
+    addParameter(mDelayOneTimeParameter = new juce::AudioParameterFloat("delay one delaytime", "Delay One Delay Time", 0.01, MAX_DELAY_TIME, 0.5));
     addParameter(mDryGainParameter = new juce::AudioParameterFloat("drygain", "Dry Gain", 0.0, 1.0 , 0.5));
     addParameter(mDelayOneGainParameter = new juce::AudioParameterFloat("delayonegain", "Delay One Gain", 0.0, 1.0 , 0.5));
-    addParameter(mDelayOneModDepthParameter = new juce::AudioParameterFloat("modDepth", "Mod Depth", 0, 1, 0.5));
+    addParameter(mDelayOneModDepthParameter = new juce::AudioParameterFloat("delayonemodDepth", "Delay One Mod Depth", 0, 1, 0.5));
+    addParameter(mDelayOneFeedbackParameter = new juce::AudioParameterFloat("m", "Mod Depth", 0.0, 0.98, 0.5));
     
 
     mCircularBufferLeft = nullptr;
@@ -39,7 +40,7 @@ Waylomod2020AudioProcessor::Waylomod2020AudioProcessor()
     feedback = 0.5;
     //delayTime = 0.5;
     mfeedbackLeft = 0.0;
-    mfeedbackRight = 0.0;
+    //mfeedbackRight = 0.0;
     mDelayTimeSmoothed = 1;
     mLFOphase = 0;
     mLFOrate = 0.3f;
@@ -167,7 +168,7 @@ void Waylomod2020AudioProcessor::prepareToPlay (double sampleRate, int samplesPe
     }
     
     mCircularBufferWriteHead = 0;
-    mDelayTimeSmoothed = *mDelayTimeParameter;
+    mDelayTimeSmoothed = *mDelayOneTimeParameter;
     
     //dryGain = *mDryGainParameter;
     
@@ -282,7 +283,7 @@ void Waylomod2020AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
         float delay_sample_Right = Waylomod2020AudioProcessor::linInterp(mCircularBufferRight[readHeadX], mCircularBufferRight[readHeadX1], readHeadFloat);
         
         //mfeedbackLeft = delay_sample_Left*0.5;
-        mfeedbackRight = delay_sample_Right*feedback;
+        mfeedbackRight = delay_sample_Right* *mDelayOneFeedbackParameter;
         
         
         buffer.setSample(0, i, buffer.getSample(0, i)* *mDryGainParameter);

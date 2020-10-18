@@ -61,14 +61,17 @@ private:
     
     float mDelayTimeInSamples;
     float mDelayReadHead;
-    float dryGain;
-    float delayLevel;
+    //float dryGain;
+    //float delayLevel;
     float feedback;
-    float delayTime;
+    //float delayTime;
     float mLFOphase;
     float mLFOrate;
     float mLFOdepth;
-   // juce::AudioParameterFloat* mDelayTimeParameter;
+   juce::AudioParameterFloat* mDelayTimeParameter;
+   juce::AudioParameterFloat* mDryGainParameter;
+   juce::AudioParameterFloat* mDelayOneGainParameter;
+   
     //juce::AudioParameterFloat* mModDepthParameter;
    // juce::AudioParameterFloat* mModRateParameter;
     

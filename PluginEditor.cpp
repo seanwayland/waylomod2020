@@ -15,10 +15,10 @@ Waylomod2020AudioProcessorEditor::Waylomod2020AudioProcessorEditor (Waylomod2020
 {
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
-    setSize (400, 300);
+    setSize (600,600);
     auto& params = processor.getParameters();
     
-    /**
+    
     juce::AudioParameterFloat* delayTimeParameter = (juce::AudioParameterFloat*)params.getUnchecked(0);
     mDelayTimeSlider.setBounds(100, 0 , 200, 200);
     mDelayTimeSlider.setSliderStyle(juce::Slider::SliderStyle::RotaryVerticalDrag);
@@ -29,7 +29,29 @@ Waylomod2020AudioProcessorEditor::Waylomod2020AudioProcessorEditor (Waylomod2020
     mDelayTimeSlider.onValueChange = [this, delayTimeParameter] { *delayTimeParameter = mDelayTimeSlider.getValue(); };
     mDelayTimeSlider.onDragStart = [delayTimeParameter] {delayTimeParameter->beginChangeGesture(); };
     mDelayTimeSlider.onDragEnd = [delayTimeParameter] {delayTimeParameter->endChangeGesture(); };
-    **/
+    
+    juce::AudioParameterFloat* dryGainParameter = (juce::AudioParameterFloat*)params.getUnchecked(1);
+    mDryGainSlider.setBounds(100, 200, 200, 200);
+    mDryGainSlider.setSliderStyle(juce::Slider::SliderStyle::RotaryVerticalDrag);
+    mDryGainSlider.setTextBoxStyle(juce::Slider::TextBoxLeft, false, 100, 50);
+    mDryGainSlider.setRange(dryGainParameter->range.start, dryGainParameter->range.end);
+    mDryGainSlider.setValue(*dryGainParameter);
+    addAndMakeVisible(mDryGainSlider);
+    mDryGainSlider.onValueChange = [this, dryGainParameter] { *dryGainParameter = mDryGainSlider.getValue(); };
+    mDryGainSlider.onDragStart = [dryGainParameter] {dryGainParameter->beginChangeGesture(); };
+    mDryGainSlider.onDragEnd = [dryGainParameter] {dryGainParameter->endChangeGesture(); };
+    
+    juce::AudioParameterFloat* delayOneGainParameter = (juce::AudioParameterFloat*)params.getUnchecked(2);
+    mDelayOneGainSlider.setBounds(100, 400 , 200, 200);
+    mDelayOneGainSlider.setSliderStyle(juce::Slider::SliderStyle::RotaryVerticalDrag);
+    mDelayOneGainSlider.setTextBoxStyle(juce::Slider::TextBoxLeft, false, 100, 50);
+    mDelayOneGainSlider.setRange(delayOneGainParameter->range.start, delayOneGainParameter->range.end);
+    mDelayOneGainSlider.setValue(*delayOneGainParameter);
+    addAndMakeVisible(mDelayOneGainSlider);
+    mDelayOneGainSlider.onValueChange = [this, delayOneGainParameter] { *delayOneGainParameter = mDelayOneGainSlider.getValue(); };
+    mDelayOneGainSlider.onDragStart = [delayOneGainParameter] {delayOneGainParameter->beginChangeGesture(); };
+    mDelayOneGainSlider.onDragEnd = [delayOneGainParameter] {delayOneGainParameter->endChangeGesture(); };
+    
     
 }
 

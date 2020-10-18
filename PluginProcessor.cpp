@@ -22,7 +22,9 @@ Waylomod2020AudioProcessor::Waylomod2020AudioProcessor()
                   )
 #endif
 {
-    //addParameter(mDelayTimeParameter = new juce::AudioParameterFloat("delaytime", "Delay Time", 0.01, MAX_DELAY_TIME, 0.5));
+    addParameter(mDelayTimeParameter = new juce::AudioParameterFloat("delaytime", "Delay Time", 0.01, MAX_DELAY_TIME, 0.5));
+    addParameter(mDryGainParameter = new juce::AudioParameterFloat("drygain", "Dry Gain", 0.0, 1.0 , 0.5));
+    addParameter(mDelayOneGainParameter = new juce::AudioParameterFloat("delayonegain", "Delay One Gain", 0.0, 1.0 , 0.5));
     //addParameter(mModDepthParameter = new juce::AudioParameterFloat("modDepth", "Mod Depth", 0, 1, 0.5));
     //addParameter(mModRateParameter = new juce::AudioParameterFloat("delaytime", "Delay Time", 0.1f, 20.f, 10.f));
 
@@ -32,10 +34,10 @@ Waylomod2020AudioProcessor::Waylomod2020AudioProcessor()
     mCircularBufferLength = 0;
     mDelayTimeInSamples = 0.0;
     mDelayReadHead = 0.0;
-    dryGain = 0.5;
-    delayLevel = 0.4;
+    //dryGain = 1;
+    //delayLevel = 0.4;
     feedback = 0.5;
-    delayTime = 0.5;
+    //delayTime = 0.5;
     mfeedbackLeft = 0.0;
     mfeedbackRight = 0.0;
     mDelayTimeSmoothed = 1;
@@ -137,10 +139,13 @@ void Waylomod2020AudioProcessor::prepareToPlay (double sampleRate, int samplesPe
     mLFOdepth = 0.5f;
     
     
+    
     // Use this method as the place to do any pre-playback
     // initialisation that you need..
     mCircularBufferLength = sampleRate*MAX_DELAY_TIME;
     //mDelayTimeInSamples = sampleRate* *mDelayTimeParameter;
+    
+    
     // Use this method as the place to do any pre-playback
     // initialisation that you need..
     if (mCircularBufferLeft != nullptr ) {
@@ -162,7 +167,10 @@ void Waylomod2020AudioProcessor::prepareToPlay (double sampleRate, int samplesPe
     }
     
     mCircularBufferWriteHead = 0;
-   // mDelayTimeSmoothed = *mDelayTimeParameter;
+    mDelayTimeSmoothed = *mDelayTimeParameter;
+    
+    //dryGain = *mDryGainParameter;
+    
     
 }
 
@@ -277,8 +285,9 @@ void Waylomod2020AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
         mfeedbackRight = delay_sample_Right*feedback;
         
         
-        buffer.setSample(0, i, dryGain*buffer.getSample(0, i) );
-        buffer.setSample(1, i, dryGain*buffer.getSample(1 ,i) + delayLevel*delay_sample_Right);
+        buffer.setSample(0, i, buffer.getSample(0, i)* *mDryGainParameter);
+        buffer.setSample(1, i, buffer.getSample(1, i)* *mDryGainParameter + delay_sample_Right* *mDelayOneGainParameter);
+        //buffer.setSample(1, i, buffer.getSample(1 ,i)* dryGain + delayLevel*delay_sample_Right);
         //buffer.setSample(0, i, delay_sample_Left);
         //buffer.setSample(1, i, delay_sample_Right);
         // buffer.setSample(0, i, delayLevel*mCircularBufferLeft[int(mDelayReadHead)]);

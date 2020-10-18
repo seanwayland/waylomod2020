@@ -28,7 +28,9 @@ private:
     // This reference is provided as a quick way for your editor to
     // access the processor object that created it.
     Waylomod2020AudioProcessor& audioProcessor;
-   // juce::Slider mDelayTimeSlider;
+    juce::Slider mDelayTimeSlider;
+    juce::Slider mDryGainSlider;
+    juce::Slider mDelayOneGainSlider;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Waylomod2020AudioProcessorEditor)
 };

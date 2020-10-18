@@ -31,7 +31,7 @@ Waylomod2020AudioProcessorEditor::Waylomod2020AudioProcessorEditor (Waylomod2020
     mDelayTimeSlider.onDragEnd = [delayTimeParameter] {delayTimeParameter->endChangeGesture(); };
     
     juce::AudioParameterFloat* dryGainParameter = (juce::AudioParameterFloat*)params.getUnchecked(1);
-    mDryGainSlider.setBounds(100, 200, 200, 200);
+    mDryGainSlider.setBounds(100, 100, 200, 200);
     mDryGainSlider.setSliderStyle(juce::Slider::SliderStyle::RotaryVerticalDrag);
     mDryGainSlider.setTextBoxStyle(juce::Slider::TextBoxLeft, false, 100, 50);
     mDryGainSlider.setRange(dryGainParameter->range.start, dryGainParameter->range.end);
@@ -42,7 +42,7 @@ Waylomod2020AudioProcessorEditor::Waylomod2020AudioProcessorEditor (Waylomod2020
     mDryGainSlider.onDragEnd = [dryGainParameter] {dryGainParameter->endChangeGesture(); };
     
     juce::AudioParameterFloat* delayOneGainParameter = (juce::AudioParameterFloat*)params.getUnchecked(2);
-    mDelayOneGainSlider.setBounds(100, 400 , 200, 200);
+    mDelayOneGainSlider.setBounds(100, 200 , 200, 200);
     mDelayOneGainSlider.setSliderStyle(juce::Slider::SliderStyle::RotaryVerticalDrag);
     mDelayOneGainSlider.setTextBoxStyle(juce::Slider::TextBoxLeft, false, 100, 50);
     mDelayOneGainSlider.setRange(delayOneGainParameter->range.start, delayOneGainParameter->range.end);
@@ -53,7 +53,7 @@ Waylomod2020AudioProcessorEditor::Waylomod2020AudioProcessorEditor (Waylomod2020
     mDelayOneGainSlider.onDragEnd = [delayOneGainParameter] {delayOneGainParameter->endChangeGesture(); };
     
     juce::AudioParameterFloat* delayOneModDpethParameter = (juce::AudioParameterFloat*)params.getUnchecked(3);
-    mDelayOneModDepthSlider.setBounds(100, 600 , 200, 200);
+    mDelayOneModDepthSlider.setBounds(100, 300 , 200, 200);
     mDelayOneModDepthSlider.setSliderStyle(juce::Slider::SliderStyle::RotaryVerticalDrag);
     mDelayOneModDepthSlider.setTextBoxStyle(juce::Slider::TextBoxLeft, false, 100, 50);
     mDelayOneGainSlider.setRange(delayOneModDpethParameter->range.start, delayOneModDpethParameter->range.end);
@@ -62,6 +62,17 @@ Waylomod2020AudioProcessorEditor::Waylomod2020AudioProcessorEditor (Waylomod2020
     mDelayOneModDepthSlider.onValueChange = [this, delayOneModDpethParameter] { *delayOneModDpethParameter = mDelayOneModDepthSlider.getValue(); };
     mDelayOneModDepthSlider.onDragStart = [delayOneModDpethParameter] {delayOneModDpethParameter->beginChangeGesture(); };
     mDelayOneModDepthSlider.onDragEnd = [delayOneModDpethParameter] {delayOneModDpethParameter->endChangeGesture(); };
+    
+    juce::AudioParameterFloat* delayOneModRateParameter = (juce::AudioParameterFloat*)params.getUnchecked(3);
+    mDelayOneModRateSlider.setBounds(100, 400 , 200, 200);
+    mDelayOneModRateSlider.setSliderStyle(juce::Slider::SliderStyle::RotaryVerticalDrag);
+    mDelayOneModRateSlider.setTextBoxStyle(juce::Slider::TextBoxLeft, false, 100, 50);
+    mDelayOneModRateSlider.setRange(delayOneModRateParameter->range.start, delayOneModRateParameter->range.end);
+    mDelayOneModRateSlider.setValue(*delayOneGainParameter);
+    addAndMakeVisible(mDelayOneModRateSlider);
+    mDelayOneModRateSlider.onValueChange = [this, delayOneModRateParameter] { *delayOneModRateParameter = mDelayOneModRateSlider.getValue(); };
+    mDelayOneModRateSlider.onDragStart = [delayOneModRateParameter] {delayOneModRateParameter->beginChangeGesture(); };
+    mDelayOneModRateSlider.onDragEnd = [delayOneModRateParameter] {delayOneModRateParameter->endChangeGesture(); };
     
     
 }

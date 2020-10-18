@@ -43,7 +43,7 @@ Waylomod2020AudioProcessor::Waylomod2020AudioProcessor()
     mDelayTimeSmoothed = 1;
     mLFOphase = 0;
     mLFOrate = 0.3f;
-    mLFOdepth = 0.1f;
+    //mLFOdepth = 0.1f;
     
 }
 
@@ -136,7 +136,7 @@ void Waylomod2020AudioProcessor::prepareToPlay (double sampleRate, int samplesPe
 {
     mLFOphase = 0;
     mLFOrate = 0.3f;
-    mLFOdepth = 0.5f;
+    //mLFOdepth = 0.5f;
     
     
     
@@ -241,7 +241,7 @@ void Waylomod2020AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
         
         
        // mLFOphase += *mModRateParameter * getSampleRate();
-        mLFOphase += mLFOrate / getSampleRate();
+        mLFOphase += *mDelayOneModDepthParameter / getSampleRate();
         
         
         if ( mLFOphase > 1){

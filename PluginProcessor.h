@@ -67,12 +67,12 @@ private:
     //float delayTime;
     float mLFOphase;
     float mLFOrate;
-    float mLFOdepth;
+    //float mLFOdepth;
    juce::AudioParameterFloat* mDelayTimeParameter;
    juce::AudioParameterFloat* mDryGainParameter;
    juce::AudioParameterFloat* mDelayOneGainParameter;
    juce::AudioParameterFloat* mDelayOneModDepthParameter;
-   // juce::AudioParameterFloat* mModRateParameter;
+   juce::AudioParameterFloat* mModRateParameter;
     
     float mLastInputGain  = 0.0f;
     float mDelayTimeSmoothed; 

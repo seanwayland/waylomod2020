@@ -41,6 +41,18 @@ private:
     juce::Slider mDelayTwoModRateSlider;
     juce::Slider mDelayTwoFeedbackSlider;
     
+    juce::Slider mDelayThreeTimeSlider;
+    juce::Slider mDelayThreeGainSlider;
+    juce::Slider mDelayThreeModDepthSlider;
+    juce::Slider mDelayThreeModRateSlider;
+    juce::Slider mDelayThreeFeedbackSlider;
+    
+    juce::Slider mDelayFourTimeSlider;
+    juce::Slider mDelayFourGainSlider;
+    juce::Slider mDelayFourModDepthSlider;
+    juce::Slider mDelayFourModRateSlider;
+    juce::Slider mDelayFourFeedbackSlider;
+    
     
     
     

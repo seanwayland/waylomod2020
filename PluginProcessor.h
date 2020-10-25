@@ -72,6 +72,20 @@ private:
     float mLFOrateTwo;
     
     
+    float mDelayThreeTimeInSamples;
+    float mDelayThreeReadHead;
+    float feedbackThree;
+    float mLFOphaseThree;
+    float mLFOrateThree;
+    
+    
+    float mDelayFourTimeInSamples;
+    float mDelayFourReadHead;
+    float feedbackFour;
+    float mLFOphaseFour;
+    float mLFOrateFour;
+    
+    
    juce::AudioParameterFloat* mDelayOneTimeParameter;
    juce::AudioParameterFloat* mDryGainParameter;
    juce::AudioParameterFloat* mDelayOneGainParameter;
@@ -86,6 +100,18 @@ private:
    juce::AudioParameterFloat* mDelayTwoModRateParameter;
    juce::AudioParameterFloat* mDelayTwoFeedbackParameter;
     
+    juce::AudioParameterFloat* mDelayThreeTimeParameter;
+    juce::AudioParameterFloat* mDelayThreeGainParameter;
+    juce::AudioParameterFloat* mDelayThreeModDepthParameter;
+    juce::AudioParameterFloat* mDelayThreeModRateParameter;
+    juce::AudioParameterFloat* mDelayThreeFeedbackParameter;
+    
+    juce::AudioParameterFloat* mDelayFourTimeParameter;
+    juce::AudioParameterFloat* mDelayFourGainParameter;
+    juce::AudioParameterFloat* mDelayFourModDepthParameter;
+    juce::AudioParameterFloat* mDelayFourModRateParameter;
+    juce::AudioParameterFloat* mDelayFourFeedbackParameter;
+    
     float mLastInputGain  = 0.0f;
     float mDelayTimeSmoothed; 
     
@@ -99,6 +125,7 @@ private:
     float mfeedbackLeft;
     float mfeedbackRight;
     
+    
     float mLastInputGainTwo  = 0.0f;
     float mDelayTimeSmoothedTwo;
     
@@ -111,5 +138,34 @@ private:
     
     float mfeedbackLeftTwo;
     float mfeedbackRightTwo;
+    
+    
+    float mLastInputGainThree  = 0.0f;
+    float mDelayTimeSmoothedThree;
+    
+    float* mCircularBufferRightThree;
+    float* mCircularBufferLeftThree;
+    
+    int mCircularBufferWriteHeadThree;
+    
+    int mCircularBufferLengthThree;
+    
+    float mfeedbackLeftThree;
+    float mfeedbackRightThree;
+    
+    
+    
+    float mLastInputGainFour  = 0.0f;
+    float mDelayTimeSmoothedFour;
+    
+    float* mCircularBufferRightFour;
+    float* mCircularBufferLeftFour;
+
+    int mCircularBufferWriteHeadFour;
+    
+    int mCircularBufferLengthFour;
+    
+    float mfeedbackLeftFour;
+    float mfeedbackRightFour;
     
 };

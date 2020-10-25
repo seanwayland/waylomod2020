@@ -64,6 +64,14 @@ private:
     float feedback;
     float mLFOphase;
     float mLFOrate;
+    
+    float mDelayTwoTimeInSamples;
+    float mDelayTwoReadHead;
+    float feedbackTwo;
+    float mLFOphaseTwo;
+    float mLFOrateTwo;
+    
+    
    juce::AudioParameterFloat* mDelayOneTimeParameter;
    juce::AudioParameterFloat* mDryGainParameter;
    juce::AudioParameterFloat* mDelayOneGainParameter;
@@ -90,5 +98,18 @@ private:
     
     float mfeedbackLeft;
     float mfeedbackRight;
+    
+    float mLastInputGainTwo  = 0.0f;
+    float mDelayTimeSmoothedTwo;
+    
+    float* mCircularBufferRightTwo;
+    float* mCircularBufferLeftTwo;
+    
+    int mCircularBufferWriteHeadTwo;
+    
+    int mCircularBufferLengthTwo;
+    
+    float mfeedbackLeftTwo;
+    float mfeedbackRightTwo;
     
 };

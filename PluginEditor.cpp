@@ -31,7 +31,7 @@ Waylomod2020AudioProcessorEditor::Waylomod2020AudioProcessorEditor (Waylomod2020
     mDelayTimeSlider.onDragEnd = [delayTimeParameter] {delayTimeParameter->endChangeGesture(); };
     
     juce::AudioParameterFloat* dryGainParameter = (juce::AudioParameterFloat*)params.getUnchecked(1);
-    mDryGainSlider.setBounds(100, 0, 200, 200);
+    mDryGainSlider.setBounds(400, 0, 200, 200);
     mDryGainSlider.setSliderStyle(juce::Slider::SliderStyle::RotaryVerticalDrag);
     mDryGainSlider.setTextBoxStyle(juce::Slider::TextBoxLeft, false, 100, 50);
     mDryGainSlider.setRange(dryGainParameter->range.start, dryGainParameter->range.end);

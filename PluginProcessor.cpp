@@ -22,7 +22,7 @@ Waylomod2020AudioProcessor::Waylomod2020AudioProcessor()
                   )
 #endif
 {
-    addParameter(mDelayOneTimeParameter = new juce::AudioParameterFloat("delay one delaytime", "Delay One Delay Time", 0.01, MAX_DELAY_TIME, 0.5));
+    addParameter(mDelayOneTimeParameter = new juce::AudioParameterFloat("delay one delaytime", "Delay One Delay Time", 0.001, MAX_DELAY_TIME, 0.5));
     addParameter(mDryGainParameter = new juce::AudioParameterFloat("drygain", "Dry Gain", 0.0, 1.0 , 0.5));
     addParameter(mDelayOneGainParameter = new juce::AudioParameterFloat("delayonegain", "Delay One Gain", 0.0, 1.0 , 0.5));
     addParameter(mDelayOneModDepthParameter = new juce::AudioParameterFloat("delayonemodDepth", "Delay One Mod Depth", 0, 1, 0.5));
@@ -170,7 +170,8 @@ void Waylomod2020AudioProcessor::prepareToPlay (double sampleRate, int samplesPe
     }
     
     mCircularBufferWriteHead = 0;
-    mDelayTimeSmoothed = *mDelayOneTimeParameter;
+    //mDelayTimeSmoothed = *mDelayOneTimeParameter;
+    mDelayTimeSmoothed = 0.5;
     
     //dryGain = *mDryGainParameter;
     
@@ -256,7 +257,8 @@ void Waylomod2020AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
         float lfoOutMapped = juce::jmap(lfoOut,-1.f,1.f,0.005f, 0.03f);
         
         mDelayTimeSmoothed = mDelayTimeSmoothed - 0.001*(mDelayTimeSmoothed - lfoOutMapped);
-        mDelayTimeInSamples = 20000 + getSampleRate() * mDelayTimeSmoothed ;
+        int dtime = static_cast<int>(*mDelayOneTimeParameter*getSampleRate());
+        mDelayTimeInSamples = dtime + getSampleRate() * mDelayTimeSmoothed ;
         
         //mCircularBufferLeft[mCircularBufferWriteHead] = LeftChannel[i] + mfeedbackLeft;
         mCircularBufferRight[mCircularBufferWriteHead] = RightChannel[i] + mfeedbackRight;

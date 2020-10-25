@@ -61,19 +61,22 @@ private:
     
     float mDelayTimeInSamples;
     float mDelayReadHead;
-    //float dryGain;
-    //float delayLevel;
     float feedback;
-    //float delayTime;
     float mLFOphase;
     float mLFOrate;
-    //float mLFOdepth;
    juce::AudioParameterFloat* mDelayOneTimeParameter;
    juce::AudioParameterFloat* mDryGainParameter;
    juce::AudioParameterFloat* mDelayOneGainParameter;
    juce::AudioParameterFloat* mDelayOneModDepthParameter;
    juce::AudioParameterFloat* mDelayOneModRateParameter;
    juce::AudioParameterFloat* mDelayOneFeedbackParameter;
+    
+
+   juce::AudioParameterFloat* mDelayTwoTimeParameter;
+   juce::AudioParameterFloat* mDelayTwoGainParameter;
+   juce::AudioParameterFloat* mDelayTwoModDepthParameter;
+   juce::AudioParameterFloat* mDelayTwoModRateParameter;
+   juce::AudioParameterFloat* mDelayTwoFeedbackParameter;
     
     float mLastInputGain  = 0.0f;
     float mDelayTimeSmoothed; 

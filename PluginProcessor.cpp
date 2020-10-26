@@ -11,16 +11,20 @@
 
 //==============================================================================
 Waylomod2020AudioProcessor::Waylomod2020AudioProcessor()
-#ifndef JucePlugin_PreferredChannelConfigurations
+
 : AudioProcessor (BusesProperties()
-#if ! JucePlugin_IsMidiEffect
-#if ! JucePlugin_IsSynth
+
                   .withInput  ("Input",  juce::AudioChannelSet::stereo(), true)
-#endif
+
                   .withOutput ("Output", juce::AudioChannelSet::stereo(), true)
-#endif
+
                   )
-#endif
+
+
+
+
+
+
 {
     addParameter(mDelayOneTimeParameter = new juce::AudioParameterFloat("delay one delaytime", "Delay One Delay Time", 0.0001, MAX_DELAY_TIME, 0.5));
     addParameter(mDryGainParameter = new juce::AudioParameterFloat("drygain", "Dry Gain", 0.0, 1.0 , 0.5));
@@ -171,6 +175,8 @@ bool Waylomod2020AudioProcessor::acceptsMidi() const
     return false;
 #endif
 }
+
+
 
 bool Waylomod2020AudioProcessor::producesMidi() const
 {
@@ -348,6 +354,7 @@ void Waylomod2020AudioProcessor::releaseResources()
     // spare memory, etc.
 }
 
+/***
 #ifndef JucePlugin_PreferredChannelConfigurations
 bool Waylomod2020AudioProcessor::isBusesLayoutSupported (const BusesLayout& layouts) const
 {
@@ -371,6 +378,23 @@ bool Waylomod2020AudioProcessor::isBusesLayoutSupported (const BusesLayout& layo
 #endif
 }
 #endif
+ 
+ ***/
+
+
+bool Waylomod2020AudioProcessor::isBusesLayoutSupported (const BusesLayout& layouts) const
+{
+    if (layouts.getMainInputChannelSet() == juce::AudioChannelSet::stereo() &&
+        layouts.getMainOutputChannelSet() == juce::AudioChannelSet::stereo()) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+
+
+
 
 void Waylomod2020AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
 {
@@ -440,11 +464,11 @@ void Waylomod2020AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
         lfoOutThree *= *mDelayThreeModDepthParameter;
         lfoOutFour *= *mDelayFourModDepthParameter;
         
-        // convert -1 to 1 to changes in delay time of .005 min and .03 max
-        float lfoOutMapped = juce::jmap(lfoOut,-1.f,1.f,0.005f, 0.03f);
-        float lfoOutMappedTwo = juce::jmap(lfoOutTwo,-1.f,1.f,0.005f, 0.03f);
-        float lfoOutMappedThree = juce::jmap(lfoOutThree,-1.f,1.f,0.005f, 0.03f);
-        float lfoOutMappedFour = juce::jmap(lfoOutFour,-1.f,1.f,0.005f, 0.03f);
+        // convert -1 to 1 to changes in delay time of .001 min and .03 max
+        float lfoOutMapped = juce::jmap(lfoOut,-1.f,1.f,0.001f, 0.05f);
+        float lfoOutMappedTwo = juce::jmap(lfoOutTwo,-1.f,1.f,0.001f, 0.05f);
+        float lfoOutMappedThree = juce::jmap(lfoOutThree,-1.f,1.f,0.001f, 0.05f);
+        float lfoOutMappedFour = juce::jmap(lfoOutFour,-1.f,1.f,0.005f, 0.05f);
         
         
         // smoothly change the dely time
@@ -466,15 +490,21 @@ void Waylomod2020AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
         
         
         // shove some of the input into the circular buffer also add some of the feedback
-        mCircularBufferLeft[mCircularBufferWriteHead] = LeftChannel[i];
-        mCircularBufferRight[mCircularBufferWriteHead] = RightChannel[i] + mfeedbackRight;
-       mCircularBufferLeftTwo[mCircularBufferWriteHeadTwo] = LeftChannel[i] + mfeedbackLeftTwo;
-       mCircularBufferRightTwo[mCircularBufferWriteHeadTwo] = RightChannel[i];
+        mCircularBufferLeft[mCircularBufferWriteHead] = LeftChannel[i] +mfeedbackLeft;
         
-        mCircularBufferLeftThree[mCircularBufferWriteHeadThree] = LeftChannel[i];
+        mCircularBufferRight[mCircularBufferWriteHead] = RightChannel[i] + mfeedbackRight;
+        
+       mCircularBufferLeftTwo[mCircularBufferWriteHeadTwo] = LeftChannel[i] + mfeedbackLeftTwo;
+        
+       mCircularBufferRightTwo[mCircularBufferWriteHeadTwo] = RightChannel[i] +mfeedbackRightTwo;
+        
+        mCircularBufferLeftThree[mCircularBufferWriteHeadThree] = LeftChannel[i] +mfeedbackLeftThree;
+        
         mCircularBufferRightThree[mCircularBufferWriteHead] = RightChannel[i] + mfeedbackRightThree;
+        
         mCircularBufferLeftFour[mCircularBufferWriteHeadFour] = LeftChannel[i] + mfeedbackLeftFour;
-        mCircularBufferRightFour[mCircularBufferWriteHeadFour] = RightChannel[i];
+        
+        mCircularBufferRightFour[mCircularBufferWriteHeadFour] = RightChannel[i] + mfeedbackRightFour;
         
 
 
@@ -552,30 +582,39 @@ void Waylomod2020AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
         // get the interpolated value of the delayed sample from the circular buffer
         float delay_sample_Left = Waylomod2020AudioProcessor::linInterp(mCircularBufferLeft[readHeadX], mCircularBufferLeft[readHeadX1], readHeadFloat);
         float delay_sample_Right = Waylomod2020AudioProcessor::linInterp(mCircularBufferRight[readHeadX], mCircularBufferRight[readHeadX1], readHeadFloat);
+        
         float delay_sample_LeftTwo = Waylomod2020AudioProcessor::linInterp(mCircularBufferLeftTwo[readHeadXTwo], mCircularBufferLeftTwo[readHeadX1Two], readHeadFloatTwo);
         float delay_sample_RightTwo = Waylomod2020AudioProcessor::linInterp(mCircularBufferRightTwo[readHeadXTwo], mCircularBufferRightTwo[readHeadX1Two], readHeadFloatTwo);
         
         float delay_sample_LeftThree = Waylomod2020AudioProcessor::linInterp(mCircularBufferLeftThree[readHeadXThree], mCircularBufferLeftThree[readHeadX1Three], readHeadFloatThree);
-        float delay_sample_RightThree = Waylomod2020AudioProcessor::linInterp(mCircularBufferRightTwo[readHeadXThree], mCircularBufferRightThree[readHeadX1Three], readHeadFloatThree);
+        float delay_sample_RightThree = Waylomod2020AudioProcessor::linInterp(mCircularBufferRightThree[readHeadXThree], mCircularBufferRightThree[readHeadX1Three], readHeadFloatThree);
         
-        float delay_sample_LeftFour = Waylomod2020AudioProcessor::linInterp(mCircularBufferLeftFour[readHeadXFour], mCircularBufferLeftTwo[readHeadX1Four], readHeadFloatFour);
-        float delay_sample_RightFour = Waylomod2020AudioProcessor::linInterp(mCircularBufferRightTwo[readHeadXFour], mCircularBufferRightTwo[readHeadX1Four], readHeadFloatFour);
+        float delay_sample_LeftFour = Waylomod2020AudioProcessor::linInterp(mCircularBufferLeftFour[readHeadXFour], mCircularBufferLeftFour[readHeadX1Four], readHeadFloatFour);
+        float delay_sample_RightFour = Waylomod2020AudioProcessor::linInterp(mCircularBufferRightFour[readHeadXFour], mCircularBufferRightFour[readHeadX1Four], readHeadFloatFour);
         
         // store some delay for feedback
+        mfeedbackLeft = delay_sample_Left* *mDelayOneFeedbackParameter;
         mfeedbackRight = delay_sample_Right* *mDelayOneFeedbackParameter;
-        mfeedbackRightTwo = delay_sample_LeftTwo* *mDelayTwoFeedbackParameter;
+        mfeedbackLeftTwo = delay_sample_LeftTwo* *mDelayTwoFeedbackParameter;
+        mfeedbackRightTwo = delay_sample_RightTwo* *mDelayTwoFeedbackParameter;
+        mfeedbackLeftThree = delay_sample_LeftThree* *mDelayThreeFeedbackParameter;
         mfeedbackRightThree = delay_sample_RightThree* *mDelayThreeFeedbackParameter;
         mfeedbackRightFour = delay_sample_LeftFour* *mDelayFourFeedbackParameter;
+        mfeedbackRightFour = delay_sample_RightFour* *mDelayFourFeedbackParameter;
         
         // add delay into live audio buffer
         
-        buffer.setSample(0, i, buffer.getSample(0, i)* *mDryGainParameter);
-        buffer.setSample(1, i, delay_sample_Right* *mDelayOneGainParameter);
-        buffer.setSample(0, i, delay_sample_LeftTwo* *mDelayTwoGainParameter);
-        buffer.setSample(1, i, buffer.getSample(1, i)* *mDryGainParameter);
+        buffer.setSample(0, i, buffer.getSample(0, i)* *mDryGainParameter + delay_sample_Left* *mDelayOneGainParameter + delay_sample_Right* *mDelayOneGainParameter + delay_sample_LeftThree* *mDelayThreeGainParameter + delay_sample_RightThree* *mDelayThreeGainParameter);
+        
+        buffer.setSample(1, i, buffer.getSample(1, i)* *mDryGainParameter  +delay_sample_LeftTwo* *mDelayTwoGainParameter + delay_sample_RightTwo* *mDelayTwoGainParameter + delay_sample_RightFour* *mDelayFourGainParameter+ delay_sample_RightFour* *mDelayFourGainParameter);
+        
+        
+        //buffer.setSample(1, i, delay_sample_Right* *mDelayOneGainParameter + delay_sample_Left* *mDelayOneGainParameter);
+        //buffer.setSample(0, i, delay_sample_LeftTwo* *mDelayTwoGainParameter);
+        //buffer.setSample(1, i, buffer.getSample(1, i)* *mDryGainParameter);
         //buffer.setSample(0, i, buffer.getSample(0, i)* *mDryGainParameter);
-        buffer.setSample(1, i,  delay_sample_RightThree* *mDelayThreeGainParameter);
-        buffer.setSample(0, i,  delay_sample_LeftFour* *mDelayFourGainParameter);
+        //buffer.setSample(1, i,  delay_sample_RightThree* *mDelayThreeGainParameter);
+       // buffer.setSample(0, i,  delay_sample_LeftFour* *mDelayFourGainParameter);
        // buffer.setSample(1, i, buffer.getSample(1, i)* *mDryGainParameter);
 
  

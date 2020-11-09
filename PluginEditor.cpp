@@ -15,7 +15,7 @@ Waylomod2020AudioProcessorEditor::Waylomod2020AudioProcessorEditor (Waylomod2020
 {
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
-    setSize (1000,1000);
+    setSize (1800,1800);
     auto& params = processor.getParameters();
     
     
@@ -267,6 +267,245 @@ Waylomod2020AudioProcessorEditor::Waylomod2020AudioProcessorEditor (Waylomod2020
     mDelayFourFeedbackSlider.onValueChange = [this, delayFourFeedbackParameter] { *delayFourFeedbackParameter = mDelayFourFeedbackSlider.getValue(); };
     mDelayFourFeedbackSlider.onDragStart = [delayFourFeedbackParameter] {delayFourFeedbackParameter->beginChangeGesture(); };
     mDelayFourFeedbackSlider.onDragEnd = [delayFourFeedbackParameter] {delayFourFeedbackParameter->endChangeGesture(); };
+    
+    juce::AudioParameterFloat* delayFiveTimeParameter = (juce::AudioParameterFloat*)params.getUnchecked(21);
+    mDelayFiveTimeSlider.setBounds(900, 100 , 200, 200);
+    mDelayFiveTimeSlider.setSliderStyle(juce::Slider::SliderStyle::RotaryVerticalDrag);
+    mDelayFiveTimeSlider.setTextBoxStyle(juce::Slider::TextBoxLeft, false, 100, 50);
+    mDelayFiveTimeSlider.setRange(delayFiveTimeParameter->range.start, delayFiveTimeParameter->range.end);
+    mDelayFiveTimeSlider.setValue(*delayFiveTimeParameter);
+    addAndMakeVisible(mDelayFiveTimeSlider);
+    mDelayFiveTimeSlider.onValueChange = [this, delayFiveTimeParameter] { *delayFiveTimeParameter = mDelayFiveTimeSlider.getValue(); };
+    mDelayFiveTimeSlider.onDragStart = [delayFiveTimeParameter] {delayFiveTimeParameter->beginChangeGesture(); };
+    mDelayFiveTimeSlider.onDragEnd = [delayFiveTimeParameter] {delayFiveTimeParameter->endChangeGesture(); };
+    
+    
+    
+    juce::AudioParameterFloat* delayFiveGainParameter = (juce::AudioParameterFloat*)params.getUnchecked(22);
+    mDelayFiveGainSlider.setBounds(900, 200 , 200, 200);
+    mDelayFiveGainSlider.setSliderStyle(juce::Slider::SliderStyle::RotaryVerticalDrag);
+    mDelayFiveGainSlider.setTextBoxStyle(juce::Slider::TextBoxLeft, false, 100, 50);
+    mDelayFiveGainSlider.setRange(delayFiveGainParameter->range.start, delayFiveGainParameter->range.end);
+    mDelayFiveGainSlider.setValue(*delayFiveGainParameter);
+    addAndMakeVisible(mDelayFiveGainSlider);
+    mDelayFiveGainSlider.onValueChange = [this, delayFiveGainParameter] { *delayFiveGainParameter = mDelayFiveGainSlider.getValue(); };
+    mDelayFiveGainSlider.onDragStart = [delayFiveGainParameter] {delayFiveGainParameter->beginChangeGesture(); };
+    mDelayFiveGainSlider.onDragEnd = [delayFiveGainParameter] {delayFiveGainParameter->endChangeGesture(); };
+    
+    
+    
+    juce::AudioParameterFloat* delayFiveModDpethParameter = (juce::AudioParameterFloat*)params.getUnchecked(23);
+    mDelayFiveModDepthSlider.setBounds(900, 300 , 200, 200);
+    mDelayFiveModDepthSlider.setSliderStyle(juce::Slider::SliderStyle::RotaryVerticalDrag);
+    mDelayFiveModDepthSlider.setTextBoxStyle(juce::Slider::TextBoxLeft, false, 100, 50);
+    mDelayFiveModDepthSlider.setRange(delayFiveModDpethParameter->range.start, delayFiveModDpethParameter->range.end);
+    mDelayFiveModDepthSlider.setValue(*delayFiveModDpethParameter);
+    addAndMakeVisible(mDelayFiveModDepthSlider);
+    mDelayFiveModDepthSlider.onValueChange = [this, delayFiveModDpethParameter] { *delayFiveModDpethParameter = mDelayFiveModDepthSlider.getValue(); };
+    mDelayFiveModDepthSlider.onDragStart = [delayFiveModDpethParameter] {delayFiveModDpethParameter->beginChangeGesture(); };
+    mDelayFiveModDepthSlider.onDragEnd = [delayFiveModDpethParameter] {delayFiveModDpethParameter->endChangeGesture(); };
+    
+    juce::AudioParameterFloat* delayFiveModRateParameter = (juce::AudioParameterFloat*)params.getUnchecked(24);
+    mDelayFiveModRateSlider.setBounds(900, 400 , 200, 200);
+    mDelayFiveModRateSlider.setSliderStyle(juce::Slider::SliderStyle::RotaryVerticalDrag);
+    mDelayFiveModRateSlider.setTextBoxStyle(juce::Slider::TextBoxLeft, false, 100, 50);
+    mDelayFiveModRateSlider.setRange(delayFiveModRateParameter->range.start, delayFiveModRateParameter->range.end);
+    mDelayFiveModRateSlider.setValue(*delayFiveModRateParameter);
+    addAndMakeVisible(mDelayFiveModRateSlider);
+    mDelayFiveModRateSlider.onValueChange = [this, delayFiveModRateParameter] { *delayFiveModRateParameter = mDelayFiveModRateSlider.getValue(); };
+    mDelayFiveModRateSlider.onDragStart = [delayFiveModRateParameter] {delayFiveModRateParameter->beginChangeGesture(); };
+    mDelayFiveModRateSlider.onDragEnd = [delayFiveModRateParameter] {delayFiveModRateParameter->endChangeGesture(); };
+    
+    juce::AudioParameterFloat* delayFiveFeedbackParameter = (juce::AudioParameterFloat*)params.getUnchecked(25);
+    mDelayFiveFeedbackSlider.setBounds(900, 500 , 200, 200);
+    mDelayFiveFeedbackSlider.setSliderStyle(juce::Slider::SliderStyle::RotaryVerticalDrag);
+    mDelayFiveFeedbackSlider.setTextBoxStyle(juce::Slider::TextBoxLeft, false, 100, 50);
+    mDelayFiveFeedbackSlider.setRange(delayFiveFeedbackParameter->range.start, delayFiveFeedbackParameter->range.end);
+    mDelayFiveFeedbackSlider.setValue(*delayFiveFeedbackParameter);
+    addAndMakeVisible(mDelayFiveFeedbackSlider);
+    mDelayFiveFeedbackSlider.onValueChange = [this, delayFiveFeedbackParameter] { *delayFiveFeedbackParameter = mDelayFiveFeedbackSlider.getValue(); };
+    mDelayFiveFeedbackSlider.onDragStart = [delayFiveFeedbackParameter] {delayFiveFeedbackParameter->beginChangeGesture(); };
+    mDelayFiveFeedbackSlider.onDragEnd = [delayFiveFeedbackParameter] {delayFiveFeedbackParameter->endChangeGesture(); };
+    
+    juce::AudioParameterFloat* delaySixTimeParameter = (juce::AudioParameterFloat*)params.getUnchecked(26);
+    mDelaySixTimeSlider.setBounds(1100, 100 , 200, 200);
+    mDelaySixTimeSlider.setSliderStyle(juce::Slider::SliderStyle::RotaryVerticalDrag);
+    mDelaySixTimeSlider.setTextBoxStyle(juce::Slider::TextBoxLeft, false, 100, 50);
+    mDelaySixTimeSlider.setRange(delaySixTimeParameter->range.start, delaySixTimeParameter->range.end);
+    mDelaySixTimeSlider.setValue(*delaySixTimeParameter);
+    addAndMakeVisible(mDelaySixTimeSlider);
+    mDelaySixTimeSlider.onValueChange = [this, delaySixTimeParameter] { *delaySixTimeParameter = mDelaySixTimeSlider.getValue(); };
+    mDelaySixTimeSlider.onDragStart = [delaySixTimeParameter] {delaySixTimeParameter->beginChangeGesture(); };
+    mDelaySixTimeSlider.onDragEnd = [delaySixTimeParameter] {delaySixTimeParameter->endChangeGesture(); };
+    
+    
+    
+    juce::AudioParameterFloat* delaySixGainParameter = (juce::AudioParameterFloat*)params.getUnchecked(27);
+    mDelaySixGainSlider.setBounds(1100, 200 , 200, 200);
+    mDelaySixGainSlider.setSliderStyle(juce::Slider::SliderStyle::RotaryVerticalDrag);
+    mDelaySixGainSlider.setTextBoxStyle(juce::Slider::TextBoxLeft, false, 100, 50);
+    mDelaySixGainSlider.setRange(delaySixGainParameter->range.start, delaySixGainParameter->range.end);
+    mDelaySixGainSlider.setValue(*delaySixGainParameter);
+    addAndMakeVisible(mDelaySixGainSlider);
+    mDelaySixGainSlider.onValueChange = [this, delaySixGainParameter] { *delaySixGainParameter = mDelaySixGainSlider.getValue(); };
+    mDelaySixGainSlider.onDragStart = [delaySixGainParameter] {delaySixGainParameter->beginChangeGesture(); };
+    mDelaySixGainSlider.onDragEnd = [delaySixGainParameter] {delaySixGainParameter->endChangeGesture(); };
+    
+    
+    
+    juce::AudioParameterFloat* delaySixModDpethParameter = (juce::AudioParameterFloat*)params.getUnchecked(28);
+    mDelaySixModDepthSlider.setBounds(1100, 300 , 200, 200);
+    mDelaySixModDepthSlider.setSliderStyle(juce::Slider::SliderStyle::RotaryVerticalDrag);
+    mDelaySixModDepthSlider.setTextBoxStyle(juce::Slider::TextBoxLeft, false, 100, 50);
+    mDelaySixModDepthSlider.setRange(delaySixModDpethParameter->range.start, delaySixModDpethParameter->range.end);
+    mDelaySixModDepthSlider.setValue(*delaySixModDpethParameter);
+    addAndMakeVisible(mDelaySixModDepthSlider);
+    mDelaySixModDepthSlider.onValueChange = [this, delaySixModDpethParameter] { *delaySixModDpethParameter = mDelaySixModDepthSlider.getValue(); };
+    mDelaySixModDepthSlider.onDragStart = [delaySixModDpethParameter] {delaySixModDpethParameter->beginChangeGesture(); };
+    mDelaySixModDepthSlider.onDragEnd = [delaySixModDpethParameter] {delaySixModDpethParameter->endChangeGesture(); };
+    
+    juce::AudioParameterFloat* delaySixModRateParameter = (juce::AudioParameterFloat*)params.getUnchecked(29);
+    mDelaySixModRateSlider.setBounds(1100, 400 , 200, 200);
+    mDelaySixModRateSlider.setSliderStyle(juce::Slider::SliderStyle::RotaryVerticalDrag);
+    mDelaySixModRateSlider.setTextBoxStyle(juce::Slider::TextBoxLeft, false, 100, 50);
+    mDelaySixModRateSlider.setRange(delaySixModRateParameter->range.start, delaySixModRateParameter->range.end);
+    mDelaySixModRateSlider.setValue(*delaySixModRateParameter);
+    addAndMakeVisible(mDelaySixModRateSlider);
+    mDelaySixModRateSlider.onValueChange = [this, delaySixModRateParameter] { *delaySixModRateParameter = mDelaySixModRateSlider.getValue(); };
+    mDelaySixModRateSlider.onDragStart = [delaySixModRateParameter] {delaySixModRateParameter->beginChangeGesture(); };
+    mDelaySixModRateSlider.onDragEnd = [delaySixModRateParameter] {delaySixModRateParameter->endChangeGesture(); };
+    
+    juce::AudioParameterFloat* delaySixFeedbackParameter = (juce::AudioParameterFloat*)params.getUnchecked(30);
+    mDelaySixFeedbackSlider.setBounds(1100, 500 , 200, 200);
+    mDelaySixFeedbackSlider.setSliderStyle(juce::Slider::SliderStyle::RotaryVerticalDrag);
+    mDelaySixFeedbackSlider.setTextBoxStyle(juce::Slider::TextBoxLeft, false, 100, 50);
+    mDelaySixFeedbackSlider.setRange(delaySixFeedbackParameter->range.start, delaySixFeedbackParameter->range.end);
+    mDelaySixFeedbackSlider.setValue(*delaySixFeedbackParameter);
+    addAndMakeVisible(mDelaySixFeedbackSlider);
+    mDelaySixFeedbackSlider.onValueChange = [this, delaySixFeedbackParameter] { *delaySixFeedbackParameter = mDelaySixFeedbackSlider.getValue(); };
+    mDelaySixFeedbackSlider.onDragStart = [delaySixFeedbackParameter] {delaySixFeedbackParameter->beginChangeGesture(); };
+    mDelaySixFeedbackSlider.onDragEnd = [delaySixFeedbackParameter] {delaySixFeedbackParameter->endChangeGesture(); };
+    
+    juce::AudioParameterFloat* delaySevenTimeParameter = (juce::AudioParameterFloat*)params.getUnchecked(31);
+    mDelaySevenTimeSlider.setBounds(1300, 100 , 200, 200);
+    mDelaySevenTimeSlider.setSliderStyle(juce::Slider::SliderStyle::RotaryVerticalDrag);
+    mDelaySevenTimeSlider.setTextBoxStyle(juce::Slider::TextBoxLeft, false, 100, 50);
+    mDelaySevenTimeSlider.setRange(delaySevenTimeParameter->range.start, delaySevenTimeParameter->range.end);
+    mDelaySevenTimeSlider.setValue(*delaySevenTimeParameter);
+    addAndMakeVisible(mDelaySevenTimeSlider);
+    mDelaySevenTimeSlider.onValueChange = [this, delaySevenTimeParameter] { *delaySevenTimeParameter = mDelaySevenTimeSlider.getValue(); };
+    mDelaySevenTimeSlider.onDragStart = [delaySevenTimeParameter] {delaySevenTimeParameter->beginChangeGesture(); };
+    mDelaySevenTimeSlider.onDragEnd = [delaySevenTimeParameter] {delaySevenTimeParameter->endChangeGesture(); };
+    
+    
+    
+    juce::AudioParameterFloat* delaySevenGainParameter = (juce::AudioParameterFloat*)params.getUnchecked(32);
+    mDelaySevenGainSlider.setBounds(1300, 200 , 200, 200);
+    mDelaySevenGainSlider.setSliderStyle(juce::Slider::SliderStyle::RotaryVerticalDrag);
+    mDelaySevenGainSlider.setTextBoxStyle(juce::Slider::TextBoxLeft, false, 100, 50);
+    mDelaySevenGainSlider.setRange(delaySevenGainParameter->range.start, delaySevenGainParameter->range.end);
+    mDelaySevenGainSlider.setValue(*delaySevenGainParameter);
+    addAndMakeVisible(mDelaySevenGainSlider);
+    mDelaySevenGainSlider.onValueChange = [this, delaySevenGainParameter] { *delaySevenGainParameter = mDelaySevenGainSlider.getValue(); };
+    mDelaySevenGainSlider.onDragStart = [delaySevenGainParameter] {delaySevenGainParameter->beginChangeGesture(); };
+    mDelaySevenGainSlider.onDragEnd = [delaySevenGainParameter] {delaySevenGainParameter->endChangeGesture(); };
+    
+    
+    
+    juce::AudioParameterFloat* delaySevenModDpethParameter = (juce::AudioParameterFloat*)params.getUnchecked(33);
+    mDelaySevenModDepthSlider.setBounds(1300, 300 , 200, 200);
+    mDelaySevenModDepthSlider.setSliderStyle(juce::Slider::SliderStyle::RotaryVerticalDrag);
+    mDelaySevenModDepthSlider.setTextBoxStyle(juce::Slider::TextBoxLeft, false, 100, 50);
+    mDelaySevenModDepthSlider.setRange(delaySevenModDpethParameter->range.start, delaySevenModDpethParameter->range.end);
+    mDelaySevenModDepthSlider.setValue(*delaySevenModDpethParameter);
+    addAndMakeVisible(mDelaySevenModDepthSlider);
+    mDelaySevenModDepthSlider.onValueChange = [this, delaySevenModDpethParameter] { *delaySevenModDpethParameter = mDelaySevenModDepthSlider.getValue(); };
+    mDelaySevenModDepthSlider.onDragStart = [delaySevenModDpethParameter] {delaySevenModDpethParameter->beginChangeGesture(); };
+    mDelaySevenModDepthSlider.onDragEnd = [delaySevenModDpethParameter] {delaySevenModDpethParameter->endChangeGesture(); };
+    
+    juce::AudioParameterFloat* delaySevenModRateParameter = (juce::AudioParameterFloat*)params.getUnchecked(34);
+    mDelaySevenModRateSlider.setBounds(1300, 400 , 200, 200);
+    mDelaySevenModRateSlider.setSliderStyle(juce::Slider::SliderStyle::RotaryVerticalDrag);
+    mDelaySevenModRateSlider.setTextBoxStyle(juce::Slider::TextBoxLeft, false, 100, 50);
+    mDelaySevenModRateSlider.setRange(delaySevenModRateParameter->range.start, delaySevenModRateParameter->range.end);
+    mDelaySevenModRateSlider.setValue(*delaySevenModRateParameter);
+    addAndMakeVisible(mDelaySevenModRateSlider);
+    mDelaySevenModRateSlider.onValueChange = [this, delaySevenModRateParameter] { *delaySevenModRateParameter = mDelaySevenModRateSlider.getValue(); };
+    mDelaySevenModRateSlider.onDragStart = [delaySevenModRateParameter] {delaySevenModRateParameter->beginChangeGesture(); };
+    mDelaySevenModRateSlider.onDragEnd = [delaySevenModRateParameter] {delaySevenModRateParameter->endChangeGesture(); };
+    
+    juce::AudioParameterFloat* delaySevenFeedbackParameter = (juce::AudioParameterFloat*)params.getUnchecked(35);
+    mDelaySevenFeedbackSlider.setBounds(1300, 500 , 200, 200);
+    mDelaySevenFeedbackSlider.setSliderStyle(juce::Slider::SliderStyle::RotaryVerticalDrag);
+    mDelaySevenFeedbackSlider.setTextBoxStyle(juce::Slider::TextBoxLeft, false, 100, 50);
+    mDelaySevenFeedbackSlider.setRange(delaySevenFeedbackParameter->range.start, delaySevenFeedbackParameter->range.end);
+    mDelaySevenFeedbackSlider.setValue(*delaySevenFeedbackParameter);
+    addAndMakeVisible(mDelaySevenFeedbackSlider);
+    mDelaySevenFeedbackSlider.onValueChange = [this, delaySevenFeedbackParameter] { *delaySevenFeedbackParameter = mDelaySevenFeedbackSlider.getValue(); };
+    mDelaySevenFeedbackSlider.onDragStart = [delaySevenFeedbackParameter] {delaySevenFeedbackParameter->beginChangeGesture(); };
+    mDelaySevenFeedbackSlider.onDragEnd = [delaySevenFeedbackParameter] {delaySevenFeedbackParameter->endChangeGesture(); };
+    
+    
+    juce::AudioParameterFloat* delayEightTimeParameter = (juce::AudioParameterFloat*)params.getUnchecked(36);
+    mDelayEightTimeSlider.setBounds(1500, 100 , 200, 200);
+    mDelayEightTimeSlider.setSliderStyle(juce::Slider::SliderStyle::RotaryVerticalDrag);
+    mDelayEightTimeSlider.setTextBoxStyle(juce::Slider::TextBoxLeft, false, 100, 50);
+    mDelayEightTimeSlider.setRange(delayEightTimeParameter->range.start, delayEightTimeParameter->range.end);
+    mDelayEightTimeSlider.setValue(*delayEightTimeParameter);
+    addAndMakeVisible(mDelayEightTimeSlider);
+    mDelayEightTimeSlider.onValueChange = [this, delayEightTimeParameter] { *delayEightTimeParameter = mDelayEightTimeSlider.getValue(); };
+    mDelayEightTimeSlider.onDragStart = [delayEightTimeParameter] {delayEightTimeParameter->beginChangeGesture(); };
+    mDelayEightTimeSlider.onDragEnd = [delayEightTimeParameter] {delayEightTimeParameter->endChangeGesture(); };
+    
+    
+    
+    juce::AudioParameterFloat* delayEightGainParameter = (juce::AudioParameterFloat*)params.getUnchecked(37);
+    mDelayEightGainSlider.setBounds(1500, 200 , 200, 200);
+    mDelayEightGainSlider.setSliderStyle(juce::Slider::SliderStyle::RotaryVerticalDrag);
+    mDelayEightGainSlider.setTextBoxStyle(juce::Slider::TextBoxLeft, false, 100, 50);
+    mDelayEightGainSlider.setRange(delayEightGainParameter->range.start, delayEightGainParameter->range.end);
+    mDelayEightGainSlider.setValue(*delayEightGainParameter);
+    addAndMakeVisible(mDelayEightGainSlider);
+    mDelayEightGainSlider.onValueChange = [this, delayEightGainParameter] { *delayEightGainParameter = mDelayEightGainSlider.getValue(); };
+    mDelayEightGainSlider.onDragStart = [delayEightGainParameter] {delayEightGainParameter->beginChangeGesture(); };
+    mDelayEightGainSlider.onDragEnd = [delayEightGainParameter] {delayEightGainParameter->endChangeGesture(); };
+    
+    
+    
+    juce::AudioParameterFloat* delayEightModDpethParameter = (juce::AudioParameterFloat*)params.getUnchecked(38);
+    mDelayEightModDepthSlider.setBounds(1500, 300 , 200, 200);
+    mDelayEightModDepthSlider.setSliderStyle(juce::Slider::SliderStyle::RotaryVerticalDrag);
+    mDelayEightModDepthSlider.setTextBoxStyle(juce::Slider::TextBoxLeft, false, 100, 50);
+    mDelayEightModDepthSlider.setRange(delayEightModDpethParameter->range.start, delayEightModDpethParameter->range.end);
+    mDelayEightModDepthSlider.setValue(*delayEightModDpethParameter);
+    addAndMakeVisible(mDelayEightModDepthSlider);
+    mDelayEightModDepthSlider.onValueChange = [this, delayEightModDpethParameter] { *delayEightModDpethParameter = mDelayEightModDepthSlider.getValue(); };
+    mDelayEightModDepthSlider.onDragStart = [delayEightModDpethParameter] {delayEightModDpethParameter->beginChangeGesture(); };
+    mDelayEightModDepthSlider.onDragEnd = [delayEightModDpethParameter] {delayEightModDpethParameter->endChangeGesture(); };
+    
+    juce::AudioParameterFloat* delayEightModRateParameter = (juce::AudioParameterFloat*)params.getUnchecked(39);
+    mDelayEightModRateSlider.setBounds(1500, 400 , 200, 200);
+    mDelayEightModRateSlider.setSliderStyle(juce::Slider::SliderStyle::RotaryVerticalDrag);
+    mDelayEightModRateSlider.setTextBoxStyle(juce::Slider::TextBoxLeft, false, 100, 50);
+    mDelayEightModRateSlider.setRange(delayEightModRateParameter->range.start, delayEightModRateParameter->range.end);
+    mDelayEightModRateSlider.setValue(*delayEightModRateParameter);
+    addAndMakeVisible(mDelayEightModRateSlider);
+    mDelayEightModRateSlider.onValueChange = [this, delayEightModRateParameter] { *delayEightModRateParameter = mDelayEightModRateSlider.getValue(); };
+    mDelayEightModRateSlider.onDragStart = [delayEightModRateParameter] {delayEightModRateParameter->beginChangeGesture(); };
+    mDelayEightModRateSlider.onDragEnd = [delayEightModRateParameter] {delayEightModRateParameter->endChangeGesture(); };
+    
+    juce::AudioParameterFloat* delayEightFeedbackParameter = (juce::AudioParameterFloat*)params.getUnchecked(40);
+    mDelayEightFeedbackSlider.setBounds(1500, 500 , 200, 200);
+    mDelayEightFeedbackSlider.setSliderStyle(juce::Slider::SliderStyle::RotaryVerticalDrag);
+    mDelayEightFeedbackSlider.setTextBoxStyle(juce::Slider::TextBoxLeft, false, 100, 50);
+    mDelayEightFeedbackSlider.setRange(delayEightFeedbackParameter->range.start, delayEightFeedbackParameter->range.end);
+    mDelayEightFeedbackSlider.setValue(*delayEightFeedbackParameter);
+    addAndMakeVisible(mDelayEightFeedbackSlider);
+    mDelayEightFeedbackSlider.onValueChange = [this, delayEightFeedbackParameter] { *delayEightFeedbackParameter = mDelayEightFeedbackSlider.getValue(); };
+    mDelayEightFeedbackSlider.onDragStart = [delayEightFeedbackParameter] {delayEightFeedbackParameter->beginChangeGesture(); };
+    mDelayEightFeedbackSlider.onDragEnd = [delayEightFeedbackParameter] {delayEightFeedbackParameter->endChangeGesture(); };
+    
+
      
      
     

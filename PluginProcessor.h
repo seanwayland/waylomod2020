@@ -111,19 +111,19 @@ private:
     
     
     
-   juce::AudioParameterFloat* mDelayOneTimeParameter;
-   juce::AudioParameterFloat* mDryGainParameter;
-   juce::AudioParameterFloat* mDelayOneGainParameter;
-   juce::AudioParameterFloat* mDelayOneModDepthParameter;
-   juce::AudioParameterFloat* mDelayOneModRateParameter;
-   juce::AudioParameterFloat* mDelayOneFeedbackParameter;
+    juce::AudioParameterFloat* mDelayOneTimeParameter;
+    juce::AudioParameterFloat* mDryGainParameter;
+    juce::AudioParameterFloat* mDelayOneGainParameter;
+    juce::AudioParameterFloat* mDelayOneModDepthParameter;
+    juce::AudioParameterFloat* mDelayOneModRateParameter;
+    juce::AudioParameterFloat* mDelayOneFeedbackParameter;
     
-
-   juce::AudioParameterFloat* mDelayTwoTimeParameter;
-   juce::AudioParameterFloat* mDelayTwoGainParameter;
-   juce::AudioParameterFloat* mDelayTwoModDepthParameter;
-   juce::AudioParameterFloat* mDelayTwoModRateParameter;
-   juce::AudioParameterFloat* mDelayTwoFeedbackParameter;
+    
+    juce::AudioParameterFloat* mDelayTwoTimeParameter;
+    juce::AudioParameterFloat* mDelayTwoGainParameter;
+    juce::AudioParameterFloat* mDelayTwoModDepthParameter;
+    juce::AudioParameterFloat* mDelayTwoModRateParameter;
+    juce::AudioParameterFloat* mDelayTwoFeedbackParameter;
     
     juce::AudioParameterFloat* mDelayThreeTimeParameter;
     juce::AudioParameterFloat* mDelayThreeGainParameter;
@@ -161,10 +161,10 @@ private:
     juce::AudioParameterFloat* mDelayEightModRateParameter;
     juce::AudioParameterFloat* mDelayEightFeedbackParameter;
     
-
+    
     
     float mLastInputGain  = 0.0f;
-    float mDelayTimeSmoothed; 
+    float mDelayTimeSmoothed;
     
     float* mCircularBufferRight;
     float* mCircularBufferLeft;
@@ -211,7 +211,7 @@ private:
     
     float* mCircularBufferRightFour;
     float* mCircularBufferLeftFour;
-
+    
     int mCircularBufferWriteHeadFour;
     
     int mCircularBufferLengthFour;
